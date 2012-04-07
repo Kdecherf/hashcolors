@@ -19,10 +19,15 @@ case `basename $0` in
       ;;
 esac
 
-if [[ -f $1 ]]; then
+if [[ ! -z $1 ]]; then
   for i in $*; do
-   SUM=`$PROG $i`
-   echo $SUM
+   if [[ -f $i ]]; then
+      SUM=`$PROG $i`
+      echo $SUM
+   else
+      SUM=`echo -n "$i" | $PROG`
+      echo $SUM | sed s/-/\"$i\"/
+   fi
    for j in `echo $SUM | cut -d' ' -f1 | fold -w2`; do
       echo -en "\033[48;5;$((0x${j}))m  \033[0m"
    done
