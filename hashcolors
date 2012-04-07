@@ -1,0 +1,31 @@
+#/bin/bash
+
+case `basename $0` in
+   md5colors)
+      PROG="md5sum"
+      ;;
+   sha1colors)
+      PROG="sha1sum"
+      ;;
+   sha256colors)
+      PROG="sha256sum"
+      ;;
+   sha512colors)
+      PROG="sha512sum"
+      ;;
+   *)
+      echo "Hash program not found"
+      exit
+      ;;
+esac
+
+if [[ -f $1 ]]; then
+  SUM=`$PROG $1`
+  echo $SUM
+  for i in `echo $SUM | cut -d' ' -f1 | fold -w2`; do
+    echo -en "\033[48;5;$((0x${i}))m  \033[0m"
+  done
+  echo
+else
+  echo "One argument expected"
+fi
