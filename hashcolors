@@ -20,12 +20,14 @@ case `basename $0` in
 esac
 
 if [[ -f $1 ]]; then
-  SUM=`$PROG $1`
-  echo $SUM
-  for i in `echo $SUM | cut -d' ' -f1 | fold -w2`; do
-    echo -en "\033[48;5;$((0x${i}))m  \033[0m"
+  for i in $*; do
+   SUM=`$PROG $i`
+   echo $SUM
+   for j in `echo $SUM | cut -d' ' -f1 | fold -w2`; do
+      echo -en "\033[48;5;$((0x${j}))m  \033[0m"
+   done
+   echo
   done
-  echo
 else
-  echo "One argument expected"
+  echo "At least one argument expected"
 fi
