@@ -1,0 +1,24 @@
+README
+------
+
+
+What is it ?
+-------------
+
+Hashcolors is a tool to colorize hashes using ANSI colors.
+It's inspired by bengl/node-hashcolors on GitHub.
+
+
+Usage
+-----
+
+The tool currently supports MD5, SHA1, SHA256 and SHA512.
+Usage: hashcolors hash arg1 [arg2 [arg3 [...]]]
+  with hash is md5, sha1, sha256 or sha512
+Aliases:
+  md5colors arg1 [arg2 [arg3 [...]]]
+  sha1colors arg1 [arg2 [arg3 [...]]]
+  sha256colors arg1 [arg2 [arg3 [...]]]
+  sha512colors arg1 [arg2 [arg3 [...]]]
+
+If arg1 is a file, *colors will return its hash, else it will return the hash of the string.
