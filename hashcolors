@@ -1,38 +1,45 @@
 #!/bin/bash
 
-case `basename $0` in
+case $(basename "$i{0}") in
    md5colors)
-      PROG="md5sum"
+      PROG=$(type -P md5sum)
       ;;
    sha1colors)
-      PROG="sha1sum"
+      PROG=$(type -P sha1sum)
       ;;
    sha256colors)
-      PROG="sha256sum"
+      PROG=$(type -P sha256sum)
       ;;
    sha512colors)
-      PROG="sha512sum"
+      PROG=$(type -P sha512sum)
       ;;
    *)
-      echo "Hash program not found"
-      exit
+      PROG=$(type -P "${1}sum")
+      shift
       ;;
 esac
 
-if [[ ! -z $1 ]]; then
-  for i in $*; do
-   if [[ -f $i ]]; then
-      SUM=`$PROG $i`
-      echo $SUM
-   else
-      SUM=`echo -n "$i" | $PROG`
-      echo $SUM | sed s/-/\"$i\"/
-   fi
-   for j in `echo $SUM | cut -d' ' -f1 | fold -w2`; do
-      echo -en "\033[48;5;$((0x${j}))m  \033[0m"
-   done
-   echo
-  done
-else
-  echo "At least one argument expected"
+if [[ -z "${PROG}" ]]; then
+   echo "Hash program not found"
+   exit 1
 fi
+
+if [[ -z "${1}" ]]; then
+  echo "At least one argument expected"
+  exit 1
+fi
+
+for i in $@; do
+ if [[ -f "${i}" ]]; then
+    SUM=$("$PROG" "${i}")
+    echo ${SUM}
+ else
+    SUM=$(echo -n "${i}" | "${PROG}")
+    echo ${SUM} | sed s/-/\"${i}\"/
+ fi
+ for j in $(echo ${SUM} | cut -d' ' -f1 | fold -w2); do
+    echo -en "\033[48;5;$((0x${j}))m  \033[0m"
+ done
+ echo
+done
+
