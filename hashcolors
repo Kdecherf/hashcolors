@@ -1,6 +1,6 @@
 #!/bin/bash
 
-case $(basename "$i{0}") in
+case $(basename "${0}") in
    md5colors)
       PROG=$(type -P md5sum)
       ;;
